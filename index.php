@@ -10,7 +10,8 @@ $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATUR
 $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
 
 foreach ($events as $event) {
-  replyTextMessage($bot, $event->getReplyToken(), 'TextMessage');
+//  replyTextMessage($bot, $event->getReplyToken(), 'TextMessage');
+  replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . 'imgs/preview.jpg');
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
@@ -20,6 +21,14 @@ function replyTextMessage($bot, $replyToken, $text) {
     error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
   }
   
+}
+
+function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUrl) {
+  $response = $bot->replyMessage($replyToken, new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($originalImageUrl, $previewImageUrl));
+  
+  if (!$response->isSucceeded()) {
+    error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
+  }
 }
 
 ?>
