@@ -30,10 +30,25 @@ foreach ($events as $event) {
 //          new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('週末の天気', 'weekend'),
 //          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('Webで見る', 'http://google.jp')
 //        );
-  replyConfirmTemplate($bot, $event->getReplyToken(), 'Webで詳しく見ますか？', 'Webで詳しく見ますか？',
-          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('見る', 'http://google.jp'),
-          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('見ない', 'ignore')
-        );
+//  replyConfirmTemplate($bot, $event->getReplyToken(), 'Webで詳しく見ますか？', 'Webで詳しく見ますか？',
+//          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('見る', 'http://google.jp'),
+//          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('見ない', 'ignore')
+//        );
+  $columnArray = array();
+  for($i=0; $i < 5; $i++) {
+    $actionArray = array();
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('ボタン'.$i.'-'.1, 'c-'.$i.'-'.1));
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('ボタン'.$i.'-'.2, 'c-'.$i.'-'.2));
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('ボタン'.$i.'-'.3, 'c-'.$i.'-'.3));
+  
+   $column = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder(
+           ($i+1) . '日後の天気', '晴れ', 'https://'.$_SERVER['HTTP_HOST'].'/imgs/template.jpg',
+           $actionArray);
+   array_push($columnArray, $column);
+    }
+    
+    replyCarouselTemplate($bot, $event->getReplyToken(), '今後の天気予報', $columnArray);
+    
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
@@ -136,6 +151,18 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
     if (!$response->isSucceeded()) {
     error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
     }
+    
+  }
+  
+  function replyCarouselTemplate($bot, $replyToken, $alternativeText, $columnArray) {
+    $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder($alternativeText,
+            new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder($columnArray)
+           );
+    $response = $bot->replayMessage($replyToken, $builder);
+
+    if (!$response->isSucceeded()) {
+    error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
+    }      
     
   }
   ?>
