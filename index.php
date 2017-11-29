@@ -21,19 +21,27 @@ foreach ($events as $event) {
 //          new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder('https://'.$_SERVER['HTTP_HOST'].'/imgs/original.jpg', 'https://'.$_SERVER['HTTP_HOST'].'/imgs/preview.jpg'),
 //          new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder('LINE', '渋谷区渋谷2-21-1 ヒカリエ27階', 35.659025, 139.703473),
 //          new \LINE\LINEBot\MessageBuilder\StickerMessageBuilder(1, 1)); 
-//    if($event instanceof \LINE\LINEBot\Event\PostbackEvent) {
-//      replyTextMessage($bot, $event->getReplyToken(), 'Postback受信「'.$event->getPostbackData().'」');
-//      continue;
-//    }
-//  replyButtonTemplate($bot, $event->getReplyToken(), 'お天気お知らせ- 今日はお天気は晴れです', 'https://'.$_SERVER['HTTP_HOST'].'/imgs/template.jpg', 'お天気お知らせ', '今日は天気は晴れです', 
-//          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('明日の天気', 'Tomorrow'),
-//          new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('週末の天気', 'weekend'),
-//          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('Webで見る', 'http://google.jp')
-//        );
-//  replyConfirmTemplate($bot, $event->getReplyToken(), 'Webで詳しく見ますか？', 'Webで詳しく見ますか？',
-//          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('見る', 'http://google.jp'),
-//          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('見ない', 'ignore')
-//        );
+/*
+  if($event instanceof \LINE\LINEBot\Event\PostbackEvent) {
+      replyTextMessage($bot, $event->getReplyToken(), 'Postback受信「'.$event->getPostbackData().'」');
+      continue;
+    }
+  replyButtonTemplate($bot, $event->getReplyToken(), 'お天気お知らせ- 今日はお天気は晴れです', 'https://'.$_SERVER['HTTP_HOST'].'/imgs/template.jpg', 'お天気お知らせ', '今日は天気は晴れです', 
+          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('明日の天気', 'Tomorrow'),
+          new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('週末の天気', 'weekend'),
+          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('Webで見る', 'http://google.jp')
+        );
+ * 
+ */
+/*
+  replyConfirmTemplate($bot, $event->getReplyToken(), 'Webで詳しく見ますか？', 'Webで詳しく見ますか？',
+          new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('見る', 'http://google.jp'),
+          new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('見ない', 'ignore')
+        );
+ * 
+ */
+
+/*  
   $columnArray = array();
   for($i=0; $i < 5; $i++) {
     $actionArray = array();
@@ -48,7 +56,27 @@ foreach ($events as $event) {
     }
     
     replyCarouselTemplate($bot, $event->getReplyToken(), '今後の天気予報', $columnArray);
+*
+*/  
+  
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\ImageMessage) {
+    $content = $bot->getMessageContent($event->getMessageId());
+    $headers = $content->getHeaders();
+    error_log(var_export($headers,true));
+    $directory_path = 'tmp';
+    $filename = uniqid();
+    $extension = explode('/', $headers['Content-Type'])[1];
+    if(!file_exists($directory_path)) {
+      if(mkdir($directory_path, 0777, true)) {
+        chmod($directory_path, 0777);
+      }
+    }
     
+    file_put_contents($directory_path . '/' . $filename . '.' . $extension, $content->getRawBody());
+    
+    replyTextMessage($bot, $event->getReplyToken(), 'https://'.$_SERVER['HTTP_HOST'].'/'.$directory_path.'/'.$filename.'.'.$extension);
+  }
+  
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
