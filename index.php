@@ -157,8 +157,8 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
   function replyCarouselTemplate($bot, $replyToken, $alternativeText, $columnArray) {
     $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder($alternativeText,
             new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder($columnArray)
-           );
-    $response = $bot->replayMessage($replyToken, $builder);
+    );
+    $response = $bot->replyMessage($replyToken, $builder);
 
     if (!$response->isSucceeded()) {
     error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
