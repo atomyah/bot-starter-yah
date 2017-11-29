@@ -14,7 +14,9 @@ foreach ($events as $event) {
 //  replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . 'imgs/preview.jpg');
 //  replyLocationMessage($bot, $event->getReplyToken(), 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階', '35.659025', '139.703473');
 //  replyStickerMessage($bot, $event->getReplyToken(), 1, 1);  
-  replyVideoMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample.mp4', 'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample_preview.jpg');
+//  replyVideoMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample.mp4', 'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample_preview.jpg');
+  replyAudioMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/audios/samplem4a', 6000);
+  
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
@@ -56,6 +58,13 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
   if (!$response->isSucceeded()) {
     error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
   }   
-    
+}
+
+  function replyAudioMessage($bot, $replyToken, $originalContentUrl, $audioLength) {
+    $response = $bot->replyMessage($replyToken, new \LINE\LINEBot\MessageBuilder\AudioMessageBuilder($originalContentUrl, $audioLength));
   }
+  if (!$response->isSucceeded()) {
+    error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
+  }  
+  
 ?>
