@@ -74,7 +74,7 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
 
   
   
-  function replyMultiMessage($bot, $replyToken, ...$msgs) {
+  function replyMultiMessage($bot, $replyToken, $msgs) {
     $builder = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
     
     foreach($msgs as $value) {
