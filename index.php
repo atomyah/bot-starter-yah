@@ -124,7 +124,7 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
     
     $actionArray = array();
     foreach($actions as $value) {
-      array_push($actinArray, $value);
+      array_push($actionArray, $value);
     }
     
     $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder($alternativeText,
