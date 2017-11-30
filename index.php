@@ -60,7 +60,7 @@ foreach ($events as $event) {
 */  
   
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\ImageMessage) {
-    $content = $bot->getMessageContent($event->getMessageId());
+/*    $content = $bot->getMessageContent($event->getMessageId());
     $headers = $content->getHeaders();
     error_log(var_export($headers,true));
     $directory_path = 'tmp';
@@ -75,6 +75,16 @@ foreach ($events as $event) {
     file_put_contents($directory_path . '/' . $filename . '.' . $extension, $content->getRawBody());
     
     replyTextMessage($bot, $event->getReplyToken(), 'https://'.$_SERVER['HTTP_HOST'].'/'.$directory_path.'/'.$filename.'.'.$extension);
+ * 
+ */
+    $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
+    $bot->replyMessage($event->getReplyToken(), 
+            (new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder())
+            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('現在のプロフィールです'))
+            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('表示名:'.$profile['displayName']))
+            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('画像URL:'.$profile['pictureUrl']))
+            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('ステータスメッセージ:'.$profile['statusMessage']))
+         );
   }
   
 }
