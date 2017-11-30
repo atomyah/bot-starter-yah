@@ -79,11 +79,11 @@ foreach ($events as $event) {
  */
     $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
     $bot->replyMessage($event->getReplyToken(), 
-            (new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder())
-            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('現在のプロフィールです'))
-            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('表示名:'.$profile['displayName']))
-            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('画像URL:'.$profile['pictureUrl']))
-            ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('ステータスメッセージ:'.$profile['statusMessage']))
+            new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder(),
+            new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('現在のプロフィールです'),
+            new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('表示名:'.$profile['displayName']),
+            new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('画像URL:'.$profile['pictureUrl']),
+            new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('ステータスメッセージ:'.$profile['statusMessage'])
          );
   }
   
