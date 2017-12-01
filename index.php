@@ -10,7 +10,7 @@ $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATUR
 $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
 
 foreach ($events as $event) {
-//  replyTextMessage($bot, $event->getReplyToken(), 'TextMessage');
+  replyTextMessage($bot, $event->getReplyToken(), 'TextMessage');
 //  replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . 'imgs/preview.jpg');
 //  replyLocationMessage($bot, $event->getReplyToken(), 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階', '35.659025', '139.703473');
 //  replyStickerMessage($bot, $event->getReplyToken(), 1, 1);  
@@ -59,7 +59,7 @@ foreach ($events as $event) {
 *
 */  
   
-  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\ImageMessage) {
+//  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\ImageMessage) {
 /*    $content = $bot->getMessageContent($event->getMessageId());
     $headers = $content->getHeaders();
     error_log(var_export($headers,true));
@@ -77,6 +77,7 @@ foreach ($events as $event) {
     replyTextMessage($bot, $event->getReplyToken(), 'https://'.$_SERVER['HTTP_HOST'].'/'.$directory_path.'/'.$filename.'.'.$extension);
  * 
  */
+ /*
     $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
     $bot->replyMessage($event->getReplyToken(), 
             (new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder())
@@ -86,7 +87,7 @@ foreach ($events as $event) {
             ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('ステータスメッセージ:'.$profile['statusMessage']))
       );
   }
-  
+*/ 
 }
 
 function replyTextMessage($bot, $replyToken, $text) {
